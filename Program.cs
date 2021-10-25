@@ -6,15 +6,23 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Web;
+using Newtonsoft.Json.Linq;
 
 
 namespace ConsoleApp1
 {
+    public class Student
+    {
+        public string id { get; set; }
+        public string username { get; set; }
+    }
+
+
     class Program
     {
         static void Main(string[] args)
         {
-            string url = "http://localhost:7882/php/test/ange/Testreturnvalue.php";
+            string url = "http://localhost:7892/php/test/ange/Testreturnvalue.php";
 
             System.Net.HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
@@ -44,8 +52,18 @@ namespace ConsoleApp1
             //cc = request.CookieContainer;
             response.Close();
 
-            Console.WriteLine(data[0]);
-           
+            
+            
+            var j = JArray.Parse(data);
+            var token = j[0];
+
+            var obj = token.ToObject<Student>();
+
+            Console.WriteLine(obj.id);
+            Console.WriteLine(obj.username);
+
+
+
 
         }
     }
